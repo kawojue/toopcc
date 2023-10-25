@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id         String    @id @map("_id") @db.ObjectId
+  email      String    @unique
+  password   String
+  fullname   String
+  avatar     File?
+  token      String?
+  role       Role[]    @default([staff])
+  created_at DateTime  @default(now())
+  account    Accounts?
+  otp        OTP?
+}
+
+model Accounts {
+  id            String  @id @map("_id") @db.ObjectId
+  last_login    String?
+  resigned_date String?
+  resigned      Boolean @default(false)
+  verified      Boolean @default(false)
+  user          Users   @relation(fields: [userId], references: [id])
+  userId        String  @unique @db.ObjectId
+}
+
+model OTP {
+  id       String @id @map("_id") @db.ObjectId
+  otp      String
+  otp_date String
+  user     Users  @relation(fields: [userId], references: [id])
+  userId   String @unique @db.ObjectId
+}
+
+model Patients {
+  id             String         @id @map("_id") @db.ObjectId
+  reg_no         String         @unique
+  fullname       String
+  sex            Sex
+  dob            String?
+  dod            String?
+  address        String?
+  phone_no       String?
+  city           String?
+  state          String?
+  country        String         @default("Nigeria")
+  occupation     String?
+  next_of_kin    NextOfKin?
+  marital_status MaritalStatus?
+  diagnosis      Diagnosis[]
+  first_visit    DateTime       @default(now())
+}
+
+model NextOfKin {
+  id         String   @id @map("_id") @db.ObjectId
+  fullname   String
+  address    String
+  phone_no   String
+  city       String
+  state      String
+  country    String
+  occupation String?
+  date_added DateTime @default(now())
+  patient    Patients @relation(references: [id], fields: [patientId])
+  patientId  String   @unique @db.ObjectId
+}
+
+model Diagnosis {
+  id               String            @id @map("_id") @db.ObjectId
+  type             DiagType          @default(medication)
+  complaint        String
+  files            File[]
+  date_visit       String
+  last_edited      String?
+  refer            Boolean           @default(false)
+  code_no          String?           @unique
+  extensions       Extension[]
+  next_appointment NextAppointment[]
+  patient          Patients          @relation(references: [id], fields: [patientId])
+  patientId        String            @unique @db.ObjectId
+}
+
+model NextAppointment {
+  id               String    @id @map("_id") @db.ObjectId
+  reason           DiagType  @default(medication)
+  appointment_date String
+  diagnosis        Diagnosis @relation(references: [id], fields: [diagnosisId])
+  diagnosisId      String    @unique @db.ObjectId
+}
+
+model Extension {
+  id          String    @id @map("_id") @db.ObjectId
+  item        String
+  delivered   Boolean   @default(false)
+  diagnosis   Diagnosis @relation(references: [id], fields: [diagnosisId])
+  diagnosisId String    @unique @db.ObjectId
+}
+
+type File {
+  idx  String  @default(uuid())
+  url  String
+  path String?
+  type String
+}
+
+enum DiagType {
+  other
+  medication
+  opthalmology
+  physiotherapy
+}
+
+enum Role {
+  hr
+  admin
+  staff
+}
+
+enum Sex {
+  male
+  female
+}
+
+enum MaritalStatus {
+  Taken
+  Single
+  Married
+  Divorced
+}
