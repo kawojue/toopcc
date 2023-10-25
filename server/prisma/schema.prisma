@@ -43,6 +43,7 @@ model Patients {
   reg_no         String         @unique
   fullname       String
   sex            Sex
+  avatar         File?
   dob            String?
   dod            String?
   address        String?
