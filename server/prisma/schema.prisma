@@ -8,19 +8,19 @@ datasource db {
 }
 
 model Users {
-  id         String    @id @map("_id") @db.ObjectId
-  email      String    @unique
+  id         String   @id @map("_id") @db.ObjectId
+  email      String   @unique
   password   String
   fullname   String
   avatar     File?
   token      String?
-  role       Role[]    @default([staff])
-  created_at DateTime  @default(now())
-  account    Accounts?
+  roles      Role[]   @default([staff])
+  created_at DateTime @default(now())
+  account    Account?
   otp        OTP?
 }
 
-model Accounts {
+model Account {
   id            String  @id @map("_id") @db.ObjectId
   last_login    String?
   resigned_date String?
@@ -89,7 +89,7 @@ model Diagnosis {
 
 model NextAppointment {
   id               String    @id @map("_id") @db.ObjectId
-  reason           DiagType  @default(medication)
+  reason           String?
   appointment_date String
   diagnosis        Diagnosis @relation(references: [id], fields: [diagnosisId])
   diagnosisId      String    @unique @db.ObjectId
@@ -132,5 +132,7 @@ enum MaritalStatus {
   Taken
   Single
   Married
+  Widowed
   Divorced
+  Seperated
 }
