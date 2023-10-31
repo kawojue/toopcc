@@ -1,7 +1,7 @@
-import { Router, type Request, type Response } from 'express'
-import { sendSuccess } from '../helpers/sendRes'
 import StatusCodes from '../enums/statusCodes'
+import { sendSuccess } from '../helpers/sendRes'
 import { getIpAddress } from '../utilities/getIp'
+import { Router, type Request, type Response } from 'express'
 
 const root: Router = Router()
 
