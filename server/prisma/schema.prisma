@@ -55,7 +55,7 @@ model Patients {
   next_of_kin    NextOfKin?
   marital_status MaritalStatus?
   diagnosis      Diagnosis[]
-  first_visit    DateTime       @default(now())
+  first_visit    String
 }
 
 model NextOfKin {
