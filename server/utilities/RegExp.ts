@@ -1,0 +1,1 @@
+export const REG_NO: RegExp = /^(\d{3}[A-Z]?)$|^0{3}$/
