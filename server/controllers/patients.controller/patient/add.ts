@@ -1,20 +1,14 @@
 import prisma from '../../../prisma'
 import { REG_NO } from '../../../utilities/RegExp'
 import StatusCodes from '../../../enums/statusCodes'
+import titleName from '../../../utilities/titleName'
 import { type Response, type Request } from 'express'
 import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../../../helpers/sendRes'
-import titleName from '../../../utilities/titleName'
 
 export const add = expressAsyncHandler(
     async (req: Request, res: Response) => {
-        let {
-            reg_no, fullname, sex,
-            dob, address, phone_no,
-            city, state, country,
-            occupation, first_visit,
-            marital_status
-        } = req.body
+        let { reg_no, fullname, sex } = req.body
 
         fullname = fullname?.trim()
 
@@ -60,9 +54,19 @@ export const add = expressAsyncHandler(
             return
         }
 
+        const newPatient = await prisma.patients.create({
+            data: {
+                sex,
+                reg_no,
+                fullname,
+                ...req.body
+            }
+        })
+
         sendSuccess(
             res,
             StatusCodes.Created,
+            { msg: "Patient added successfully." }
         )
     }
 )
