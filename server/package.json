@@ -9,7 +9,7 @@
     "postinstall": "prisma generate"
   },
   "keywords": [],
-  "author": "",
+  "author": "kawojue",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.5.1",
