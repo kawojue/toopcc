@@ -1,4 +1,4 @@
-import multer, { StorageEngine, Multer } from 'multer'
+import multer, { type StorageEngine, type Multer } from 'multer'
 
 const storage: StorageEngine = multer.memoryStorage()
 const upload: Multer = multer({ storage })

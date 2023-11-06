@@ -23,7 +23,9 @@ app.use(express.urlencoded({
     extended: true,
     limit: '32mb',
 }))
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((
+    req: Request, res: Response, next: NextFunction
+) => {
     const origin: unknown = req.headers.origin
     if (allowedOrigins.includes(origin as string)) {
         res.header('Access-Control-Allow-Credentials', 'true')
