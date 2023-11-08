@@ -56,10 +56,10 @@ export const add = expressAsyncHandler(
 
         const newPatient = await prisma.patients.create({
             data: {
-                sex,
-                reg_no,
+                ...req.body,
                 fullname,
-                ...req.body
+                reg_no,
+                sex,   
             }
         })
 
