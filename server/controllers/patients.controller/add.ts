@@ -45,7 +45,7 @@ export const add = expressAsyncHandler(
             sendError(
                 res,
                 StatusCodes.BadRequest,
-                'Invalid Sex.'
+                "We don't want cross-breeds."
             )
             return
         }
@@ -70,7 +70,7 @@ export const add = expressAsyncHandler(
                 sendError(
                     res,
                     StatusCodes.BadRequest,
-                    'Are you Unfortunate?'
+                    'Marital status is not valid.'
                 )
                 return
             }
