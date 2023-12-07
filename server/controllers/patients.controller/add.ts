@@ -1,10 +1,10 @@
-import prisma from '../../../prisma'
-import StatusCodes from '../../../enums/statusCodes'
-import titleName from '../../../utilities/titleName'
+import prisma from '../../prisma'
+import StatusCodes from '../../enums/statusCodes'
+import titleName from '../../utilities/titleName'
 import { type Response, type Request } from 'express'
 import expressAsyncHandler from 'express-async-handler'
-import { REG_NO, NGN_PHONE } from '../../../utilities/RegExp'
-import { sendError, sendSuccess } from '../../../helpers/sendRes'
+import { REG_NO, NGN_PHONE } from '../../utilities/RegExp'
+import { sendError, sendSuccess } from '../../helpers/sendRes'
 
 export const add = expressAsyncHandler(
     async (req: Request, res: Response) => {

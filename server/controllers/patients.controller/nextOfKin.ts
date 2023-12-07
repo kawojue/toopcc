@@ -1,10 +1,10 @@
-import prisma from '../../../prisma'
-import StatusCodes from '../../../enums/statusCodes'
-import titleName from '../../../utilities/titleName'
+import prisma from '../../prisma'
+import StatusCodes from '../../enums/statusCodes'
+import titleName from '../../utilities/titleName'
+import { NGN_PHONE } from '../../utilities/RegExp'
 import { type Request, type Response } from 'express'
-import { NGN_PHONE } from '../../../utilities/RegExp'
 import expressAsyncHandler from 'express-async-handler'
-import { sendError, sendSuccess } from '../../../helpers/sendRes'
+import { sendError, sendSuccess } from '../../helpers/sendRes'
 
 const nextOfKin = expressAsyncHandler(
     async (req: Request, res: Response) => {
