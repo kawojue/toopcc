@@ -12,6 +12,7 @@
   "author": "kawojue",
   "license": "ISC",
   "dependencies": {
+    "@plunk/node": "^3.0.0",
     "@prisma/client": "^5.5.1",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
