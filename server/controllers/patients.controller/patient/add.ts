@@ -1,24 +1,32 @@
 import prisma from '../../../prisma'
-import { REG_NO } from '../../../utilities/RegExp'
 import StatusCodes from '../../../enums/statusCodes'
 import titleName from '../../../utilities/titleName'
 import { type Response, type Request } from 'express'
 import expressAsyncHandler from 'express-async-handler'
+import { REG_NO, NGN_PHONE } from '../../../utilities/RegExp'
 import { sendError, sendSuccess } from '../../../helpers/sendRes'
 
 export const add = expressAsyncHandler(
     async (req: Request, res: Response) => {
-        let { reg_no, fullname, sex } = req.body
+        let { reg_no, fullname, sex, phone_no } = req.body
 
         fullname = fullname?.trim()
 
-        if (!reg_no || !REG_NO.test(reg_no)) {
+        if (!reg_no) {
             sendError(
                 res,
                 StatusCodes.BadRequest,
                 'Registration number is required.'
             )
             return
+        }
+
+        if (!REG_NO.test(reg_no)) {
+            sendError(
+                res,
+                StatusCodes.BadRequest,
+                'Invalid Registration number.'
+            )
         }
 
         if (!fullname) {
@@ -41,6 +49,17 @@ export const add = expressAsyncHandler(
             return
         }
 
+        if (phone_no) {
+            if (!NGN_PHONE.test(phone_no)) {
+                sendError(
+                    res,
+                    StatusCodes.BadRequest,
+                    'Invalid Phone Number.'
+                )
+                return
+            }
+        }
+
         const patient = await prisma.patients.findUnique({
             where: { reg_no }
         })
@@ -54,12 +73,13 @@ export const add = expressAsyncHandler(
             return
         }
 
-        const newPatient = await prisma.patients.create({
+        await prisma.patients.create({
             data: {
+                first_vist: new Date().toISOString(),
                 ...req.body,
                 fullname,
                 reg_no,
-                sex,   
+                sex,
             }
         })
 
