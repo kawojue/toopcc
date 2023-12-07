@@ -8,9 +8,10 @@ import { sendError, sendSuccess } from '../../../helpers/sendRes'
 
 export const add = expressAsyncHandler(
     async (req: Request, res: Response) => {
-        let { reg_no, fullname, sex, phone_no } = req.body
+        let { reg_no, fullname, sex, phone_no, marital_status } = req.body
 
         fullname = fullname?.trim()
+        reg_no = reg_no?.toUpperCase()
 
         if (!reg_no) {
             sendError(
@@ -60,6 +61,21 @@ export const add = expressAsyncHandler(
             }
         }
 
+        if (marital_status) {
+            if (
+                marital_status !== 'Taken' && marital_status !== 'Single' &&
+                marital_status !== 'Married' && marital_status !== 'Widowed' &&
+                marital_status !== 'Divorced' && marital_status !== 'Seperated'
+            ) {
+                sendError(
+                    res,
+                    StatusCodes.BadRequest,
+                    'Marital status is not valid.'
+                )
+                return
+            }
+        }
+
         const patient = await prisma.patients.findUnique({
             where: { reg_no }
         })
@@ -75,11 +91,12 @@ export const add = expressAsyncHandler(
 
         await prisma.patients.create({
             data: {
-                first_vist: new Date().toISOString(),
                 ...req.body,
-                fullname,
-                reg_no,
                 sex,
+                reg_no,
+                fullname,
+                marital_status,
+                first_vist: new Date().toISOString(),
             }
         })
 
