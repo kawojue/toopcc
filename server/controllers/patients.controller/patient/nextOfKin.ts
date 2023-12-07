@@ -1,10 +1,10 @@
 import prisma from '../../../prisma'
 import StatusCodes from '../../../enums/statusCodes'
+import titleName from '../../../utilities/titleName'
 import { type Request, type Response } from 'express'
 import { NGN_PHONE } from '../../../utilities/RegExp'
 import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../../../helpers/sendRes'
-import titleName from '../../../utilities/titleName'
 
 const nextOfKin = expressAsyncHandler(
     async (req: Request, res: Response) => {
@@ -43,7 +43,7 @@ const nextOfKin = expressAsyncHandler(
         const patient = await prisma.patients.findUnique({
             where: {
                 id: patientId
-            }
+            },
         })
         if (!patient) {
             sendError(
@@ -54,12 +54,12 @@ const nextOfKin = expressAsyncHandler(
             return
         }
 
-        let next_of_kin = await prisma.nextOfKin.findUnique({
+        const next_of_kin = await prisma.nextOfKin.findUnique({
             where: { patientId }
         })
 
         if (!next_of_kin) {
-            next_of_kin = await prisma.nextOfKin.create({
+            await prisma.nextOfKin.create({
                 data: {
                     city,
                     state,
@@ -69,26 +69,30 @@ const nextOfKin = expressAsyncHandler(
                     occupation,
                     patient: {
                         connect: {
-                            id: patient.id
+                            id: patientId
                         }
                     }
                 },
             })
+        } else {
+            await prisma.nextOfKin.update({
+                where: { patientId },
+                data: {
+                    city,
+                    state,
+                    address,
+                    country,
+                    fullname,
+                    phone_no,
+                    occupation,
+                }
+            })
         }
 
-        await prisma.nextOfKin.update({
-            where: { patientId },
-            data: {
-                city,
-                state,
-                address,
-                country,
-                fullname,
-                phone_no,
-                occupation,
-            }
-        })
-
-        // on it
+        sendSuccess(
+            res,
+            StatusCodes.OK,
+            { msg: 'Next Of Kin has been successfully updated.' }
+        )
     }
 )
