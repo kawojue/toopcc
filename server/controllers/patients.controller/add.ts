@@ -70,7 +70,7 @@ export const add = expressAsyncHandler(
                 sendError(
                     res,
                     StatusCodes.BadRequest,
-                    'Marital status is not valid.'
+                    'Are you Unfortunate?'
                 )
                 return
             }
