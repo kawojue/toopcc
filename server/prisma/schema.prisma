@@ -21,7 +21,7 @@ model Users {
 }
 
 model Account {
-  id            String  @id @map("_id") @db.ObjectId
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
   last_login    String?
   resigned_date String?
   resigned      Boolean @default(false)
@@ -31,7 +31,7 @@ model Account {
 }
 
 model OTP {
-  id       String @id @map("_id") @db.ObjectId
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
   otp      String
   otp_date String
   user     Users  @relation(fields: [userId], references: [id])
@@ -39,7 +39,7 @@ model OTP {
 }
 
 model Patients {
-  id             String         @id @map("_id") @db.ObjectId
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
   reg_no         String         @unique
   fullname       String
   sex            Sex
@@ -59,13 +59,13 @@ model Patients {
 }
 
 model NextOfKin {
-  id         String   @id @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   fullname   String
   address    String
   phone_no   String
   city       String
   state      String
-  country    String
+  country    String   @default("Nigeria")
   occupation String?
   date_added DateTime @default(now())
   patient    Patients @relation(references: [id], fields: [patientId])
@@ -73,7 +73,7 @@ model NextOfKin {
 }
 
 model Diagnosis {
-  id               String            @id @map("_id") @db.ObjectId
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
   type             DiagType          @default(medication)
   complaint        String
   files            File[]
