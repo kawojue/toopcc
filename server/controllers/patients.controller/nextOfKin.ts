@@ -20,11 +20,11 @@ const nextOfKin = expressAsyncHandler(
             return
         }
 
-        if (!fullname || !fullname?.trim() || !address || !city || !state) {
+        if (!fullname || !fullname.trim() || !address || !city || !state) {
             sendError(
                 res,
                 StatusCodes.BadRequest,
-                'Fullname, Address, City, State are required.'
+                'Fullname, Address, City, and State are required.'
             )
             return
         }
