@@ -44,7 +44,7 @@ app.use(cors({
     },
     credentials: true,
     optionsSuccessStatus: 200,
-    methods: "GET, DELETE, POST, PATCH",
+    methods: 'GET,PATCH,POST,DELETE',
 } as CorsOptions))
 app.use(cookieParser())
 app.use(logger('dev'))
